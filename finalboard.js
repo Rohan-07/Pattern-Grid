@@ -1,3 +1,28 @@
+/*
+ *  Some Assumptions
+	* 0 => dead
+	* 1 => live
+	* I have taken 1 based indexing.
+	* Taken matrix cell naming convention for cell name i.e.
+		[] [] []
+		[] [] []
+		[] [] []
+
+		Here the name of first cell ("[]") is "1,1",
+		second cell "1,2" and so on. 
+		
+		For the user input.
+	    user simply clicks on the cell to make it live. By default all the cells are dead
+		
+		For each tick/step press Next Gen button to view the next tick/step.
+
+		For Searching the cell simply type the cell name as per the naming convention to
+		search it status;
+
+	I have taken 2 extra rows and 2 Extra columns whoes values are always 0.
+	This is to compute neighnours count.
+ */
+
 class Pattern {
 	board;
 	max_rows;
@@ -9,6 +34,7 @@ class Pattern {
 		this.board = this.createMatrix(rows, cols);
 	}
 
+	// funtion to create 2D Matrix
 	createMatrix = (max_rows, max_cols) => {
 		let mat = new Array(max_rows);
 		for (let i = 0; i < mat.length; i++) {
@@ -22,6 +48,7 @@ class Pattern {
 		return mat;
 	};
 
+	// Rendering the grids
 	createBoard = () => {
 		let nextgen = document.getElementById("nextgen");
 		nextgen.addEventListener("click", () => {
@@ -62,12 +89,14 @@ class Pattern {
 		workspace.appendChild(area);
 	};
 
+	// removing the renderd board when rest button is pressed
 	deleteBoard = () => {
 		let workspace = document.getElementById("board");
 		workspace.innerText = "";
 		this.board = this.createMatrix(1, 1);
 	};
 
+	// upading the grid
 	updateMatrix = () => {
 		let cells = document.getElementsByTagName("td");
 		for (let cell of cells) {
@@ -79,6 +108,7 @@ class Pattern {
 		}
 	};
 
+	// applying the rules
 	rules = (board) => {
 		let newBoard = this.createMatrix(this.max_rows, this.max_cols);
 		let countNeighbors = this.createMatrix(this.max_rows, this.max_cols);
@@ -121,6 +151,7 @@ class Pattern {
 		return newBoard;
 	};
 
+	// making all the cell as dead
 	resetMatrix() {
 		for (let i = 1; i < this.board.length - 1; i++) {
 			for (let j = 1; j < this.board[i].length - 1; j++) {
@@ -131,6 +162,7 @@ class Pattern {
 		console.log("you just reset the board");
 	}
 
+	// rendering the next tick/state
 	nextGen() {
 		this.board = this.rules(this.board);
 		for (let i = 1; i < this.board.length - 1; i++) {
